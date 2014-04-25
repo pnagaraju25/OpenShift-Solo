@@ -1,0 +1,152 @@
+<?php
+
+global $CONFIG;
+global $CS_CONFIG;
+
+$CONFIG = array();
+$CS_CONFIG = array();
+
+//DEBUGGING
+//Set this variable to true to enable debugging. Set it to false to turn debugging off.
+$CONFIG['enable_debugging'] = false;
+
+
+define('DEVELOPMENT_ENVIRONMENT', $CONFIG['enable_debugging']);
+
+//DATABASE CONNECTION
+define('DB_NAME', '{{database_name}}');
+define('DB_USER', '{{database_username}}');
+define('DB_PASSWORD', '{{database_password}}');
+define('DB_HOST', '{{database_hostname}}');
+
+//BASE URL
+$CONFIG['base_url'] = '{{base_url}}';
+
+//LANGUAGE
+$CONFIG['language'] = 'en';
+
+//DATE FORMAT
+$CONFIG['datepicker_format'] = 'mm/dd/yy';
+
+//COMPANY DETAILS
+$CONFIG['company']['name'] = '{{company_name}}';
+$CONFIG['company']['address1'] = '{{company_address1}}';
+$CONFIG['company']['address2'] = '{{company_address2}}';
+$CONFIG['company']['email'] = '{{company_email}}';
+$CONFIG['company']['phone'] = '{{company_phone}}';
+$CONFIG['company']['website'] = '{{company_website}}';
+
+$CONFIG['company']['logo'] = $CONFIG['base_url'] . '/client/images/sample-logo.png';
+
+//EMAIL SETTINGS
+$CONFIG['email']['use_smtp'] = false;
+$CONFIG['email']['host'] = '';
+$CONFIG['email']['port'] = 465;
+$CONFIG['email']['enable_authentication'] = true;
+$CONFIG['email']['username'] = '';
+$CONFIG['email']['password'] = '';
+$CONFIG['email']['enable_encryption'] = 'ssl';
+
+//other email settings
+$CONFIG['email']['debug_templates'] = false;
+
+
+
+
+//TASKS
+$CONFIG['task']['at_risk_timeframe'] = 2;
+
+//UPLOADS
+$CONFIG['uploads']['folder_name'] = 'files-folder';
+$CONFIG['uploads']['path'] = ROOT . '/' . $CONFIG['uploads']['folder_name'] . '/';
+$CONFIG['uploads']['web_path'] = $CONFIG['base_url'] . 'server/' .  $CONFIG['uploads']['folder_name'] . '/';
+
+$CONFIG['uploads']['user_images_folder_name'] = 'user_images';
+$CONFIG['uploads']['user_images_path'] = ROOT . '/' . $CONFIG['uploads']['folder_name'] . '/' . $CONFIG['uploads']['user_images_folder_name'] . '/';
+$CONFIG['uploads']['user_images_web_path'] = $CONFIG['base_url'] . 'server/' . $CONFIG['uploads']['folder_name'] . '/' . $CONFIG['uploads']['user_images_folder_name'] . '/';
+
+$CONFIG['uploads']['max_file_size'] = 200000000;
+$CONFIG['uploads']['allow_client_uploads'] = true;
+
+
+//CALENDAR
+//http://arshaw.com/fullcalendar/docs/display/firstDay/
+$CONFIG['calendar']['first_day'] = 0;
+
+//AUTO LOGOUT
+$CONFIG['auto_logout']['is_enabled'] = false;
+//1800 = 30 mins
+$CONFIG['auto_logout']['max_inactivity'] = 1800;
+
+//MODULES TO DISABLE
+//comma delimeted list. i.e. Files, Invoices, Calendar
+$CONFIG['modules_to_hide'] = '';
+
+//DEFAULT SERVER SIDE ROUTE
+$CONFIG['default_route_controller'] = 'portal';
+$CONFIG['default_route_action'] = 'home';
+$CONFIG['default_action'] = 'get';
+
+//PUBLIC ROUTES
+//Routes in this array can be accessible to the public (the user does not need to be logged in)
+$CONFIG['public_routes'] = array(
+    'paypal/ipn_listener',
+    'app/config',
+    'language/templates',
+    //the client side route
+    'forgot_password',
+    //the server side route
+    'user/forgot_password'
+);
+
+//RESTRICTED ROUTES
+//There is some functionality that shouldn't be exposed regardless of whether the user is logged in,
+//Routes in this array can not be accessed. Using any functionality on these models requires calling directly in another model
+//i.e upload is called by the file model
+$CONFIG['restricted_routes'] = array(
+    'upload/*',
+    'stripepayment/*',
+    'paypalpayment/get',
+    'payment/get',
+    'tasksmanager/get'
+);
+
+//USER PLACEHOLDER IMAGES
+$CONFIG['unknown_user'] = 'client/images/unknown-user-big.jpg';
+$CONFIG['unknown_user_thumb'] = 'client/images/unknown-user.jpg';
+
+//MORE DEBUGGING OPTIONS
+//will email a list of all queries for a particular request. If you would like to change the logging behaviour you can modify it in
+//core/model.class.php
+$CONFIG['log_queries'] = false;
+
+//useful for debugging paypal IPN functionality. This logging functionality will simply email a copy of the ipn data to
+//the admin email specified in this config file. If you would like to change the logging behaviour you can modify it in
+//application/models/paypalpayment.php
+$CONFIG['payments']['paypal']['log_ipn_results'] = false;
+
+
+//PURCHASE CODE
+$CONFIG['purchase_code'] = '{{purchase_code}}';
+
+
+//CLIENT SIDE CONFIG
+//Config values necessary for the client side (javascript) code
+//DO NOT PLACE ANY SENSITIVE INFORMATION IN THESE VARIABLES
+$CS_CONFIG['datepicker_format'] = $CONFIG['datepicker_format'];
+$CS_CONFIG['calendarFirstDay'] = $CONFIG['calendar']['first_day'];
+
+//Determines the format to show in the files view
+//Valid values are Tiles or LineItems
+$CS_CONFIG['default_file_view'] = 'SimpleTiles';
+$CS_CONFIG['default_dashboard_projects_view'] = 'Tiles';
+$CS_CONFIG['default_route'] = 'dashboard';
+$CS_CONFIG['company_name'] = $CONFIG['company']['name'];
+$CS_CONFIG['task_timer_save_interval'] = 3;
+$CS_CONFIG['public_routes'] = $CONFIG['public_routes'];
+$CS_CONFIG['allow_client_uploads'] = $CONFIG['uploads']['allow_client_uploads'];
+$CS_CONFIG['enable_debugging'] = $CONFIG['enable_debugging'];
+$CS_CONFIG['modules_to_hide'] = $CONFIG['modules_to_hide'];
+
+
+?>
